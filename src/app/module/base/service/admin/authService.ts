@@ -51,12 +51,12 @@ export class AdminAuthService extends BaseService {
       height: isEmpty(captcha.height) ? 50 : captcha.height
     });
     const result = {
-      img: `data:image/svg+xml;base64,${ Buffer.from(svg.data).toString('base64') }`,
+      img: `data:image/svg+xml;base64,${Buffer.from(svg.data).toString('base64')}`,
       id: this.utils.generateUUID()
     };
 
     const getCacheClient = await this.getCache();
-    await getCacheClient.set(`verify:captcha:img:${ result.id }`, svg.text, 'EX', 60 * 10);
+    await getCacheClient.set(`verify:captcha:img:${result.id}`, svg.text, 'EX', 60 * 10);
     return result;
   }
 
@@ -67,12 +67,12 @@ export class AdminAuthService extends BaseService {
    */
   async captchaCheck(captchaId: string, value: string): Promise<boolean> {
     const getCacheClient = await this.getCache();
-    const rv = await getCacheClient.get(`verify:captcha:img:${ captchaId }`);
+    const rv = await getCacheClient.get(`verify:captcha:img:${captchaId}`);
     if (!rv || !value || value.toLowerCase() !== rv!.toLowerCase()) {
       return false;
     } else {
       // 校验成功后移除验证码
-      await getCacheClient.del(`verify:captcha:img:${ captchaId }`);
+      await getCacheClient.del(`verify:captcha:img:${captchaId}`);
       return true;
     }
   }
@@ -118,10 +118,10 @@ export class AdminAuthService extends BaseService {
       const perms = await this.sysMenuService.getPerms(roleIds);
       const departments = await this.sysRoleDepartmentService.getByRoleIds(roleIds, user.username === 'admin');
 
-      await getCacheClient.set(`admin:department:${ user.id }`, JSON.stringify(departments));
-      await getCacheClient.set(`admin:perm:${ user.id }`, JSON.stringify(perms));
-      await getCacheClient.set(`admin:token:${ user.id }`, result.token);
-      await getCacheClient.set(`admin:token:refresh:${ user.id }`, result.token);
+      await getCacheClient.set(`admin:department:${user.id}`, JSON.stringify(departments));
+      await getCacheClient.set(`admin:perm:${user.id}`, JSON.stringify(perms));
+      await getCacheClient.set(`admin:token:${user.id}`, result.token);
+      await getCacheClient.set(`admin:token:refresh:${user.id}`, result.token);
       return result;
     } else {
       throw new CommonException(10002);
@@ -134,10 +134,10 @@ export class AdminAuthService extends BaseService {
   async logout() {
     const { userId } = this.ctx.admin;
     const getCoreCache = await this.getCache();
-    await getCoreCache.del(`admin:department:${ userId }`);
-    await getCoreCache.del(`admin:perms:${ userId }`);
-    await getCoreCache.del(`admin:token:${ userId }`);
-    await getCoreCache.del(`admin:token:refresh:${ userId }`);
+    await getCoreCache.del(`admin:department:${userId}`);
+    await getCoreCache.del(`admin:perms:${userId}`);
+    await getCoreCache.del(`admin:token:${userId}`);
+    await getCoreCache.del(`admin:token:refresh:${userId}`);
   }
 
   /**
@@ -149,7 +149,7 @@ export class AdminAuthService extends BaseService {
    */
   async generateToken(user, roleIds, expire, isRefresh?) {
     const getCacheClient = await this.getCache();
-    await getCacheClient.set(`admin:passwordVersion:img:${ user.id }`, user.passwordVersion);
+    await getCacheClient.set(`admin:passwordVersion:${user.id}`, user.passwordVersion);
     const tokenInfo = {
       isRefresh: false,
       roleIds,
@@ -188,7 +188,7 @@ export class AdminAuthService extends BaseService {
         };
         decoded['isRefresh'] = true;
         result.refreshToken = jwt.sign(decoded, this.coreConfig.jwt.secret, { expiresIn: refreshExpire });
-        await getCacheClient.set(`admin:passwordVersion:${ decoded['userId'] }`, decoded['passwordVersion']);
+        await getCacheClient.set(`admin:passwordVersion:${decoded['userId']}`, decoded['passwordVersion']);
         return result;
       }
     } catch (err) {
