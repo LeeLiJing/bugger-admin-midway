@@ -1,6 +1,6 @@
 import { Provide } from '@midwayjs/decorator';
 import { BaseService } from '@Base/service';
-import { isEmpty, uniq, remove } from 'lodash';
+import { isEmpty, remove, uniq } from 'lodash';
 
 /**
  * 菜单
@@ -32,6 +32,15 @@ export class SysMenuService extends BaseService {
       });
     }
     return uniq(perms);
+  }
+
+  /**
+   * 获得用户菜单信息
+   * @param roleIds
+   * @param isAdmin 是否是超管
+   */
+  async getMenus(roleIds, isAdmin) {
+    return await this.nativeQuery(`SELECT a.* FROM sys_menu a ${this.setSql(!isAdmin,'JOIN sys_role_menu b on a.id =b.menuId AND b.roleId in (?)',[roleIds])} GROUP BY a.id ORDER BY orderNum ASC`);
   }
 
 }
