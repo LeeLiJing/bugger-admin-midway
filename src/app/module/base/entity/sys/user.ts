@@ -38,11 +38,11 @@ export class SysUserEntity extends BaseEntity {
   @Column({ comment: '邮箱', nullable: true })
   email: string;
 
-  @Column({ comment: '备注', nullable: true })
-  remark: string;
-
   @Column({ comment: '状态 0:禁用 1：启用', default: 1, type: 'tinyint' })
   status: number;
+
+  @Column({ comment: '备注', nullable: true })
+  remark: string;
 
   // 部门名称
   departmentName: string;
