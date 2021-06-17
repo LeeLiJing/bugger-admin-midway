@@ -31,4 +31,15 @@ export class AdminPublicController extends BaseController {
       data: await this.authService.login(params)
     });
   }
+
+  /**
+   * 刷新token
+   * */
+  @Get('refreshToken')
+  async refreshToken(@Query() refreshToken: string): Promise<ResOp> {
+    return this.ok({
+      data: await this.authService.refreshToken(refreshToken)
+    });
+  }
+
 }
