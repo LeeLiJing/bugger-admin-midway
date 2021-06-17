@@ -10,7 +10,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_1623317016696_8874';
 
   // add your config here
-  config.middleware = [];
+  config.middleware = [ 'baseAuthorityMiddleware' ];
 
   // 关闭安全校验
   config.security = {

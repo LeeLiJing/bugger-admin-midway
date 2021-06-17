@@ -5,7 +5,7 @@ import { AdminAuthService } from '@Root/app/module/base/service/admin/authServic
 import { AuthCaptchaImageDto, AuthLoginDto } from '@Root/app/module/base/dto/admin/auth';
 
 @Provide()
-@Controller('/public')
+@Controller('/admin/public')
 export class AdminPublicController extends BaseController {
   @Inject()
   authService: AdminAuthService;
