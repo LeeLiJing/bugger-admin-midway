@@ -122,6 +122,7 @@ export class AdminAuthService extends BaseService {
       await getCacheClient.set(`admin:perm:${user.id}`, JSON.stringify(perms));
       await getCacheClient.set(`admin:token:${user.id}`, result.token);
       await getCacheClient.set(`admin:token:refresh:${user.id}`, result.token);
+      return result;
     } else {
       throw new CommonException(10002);
     }
