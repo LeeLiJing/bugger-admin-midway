@@ -129,6 +129,18 @@ export class AdminAuthService extends BaseService {
   }
 
   /**
+   * 退出登录
+   */
+  async logout() {
+    const { userId } = this.ctx.admin;
+    const getCoreCache = await this.getCache();
+    await getCoreCache.del(`admin:department:${ userId }`);
+    await getCoreCache.del(`admin:perms:${ userId }`);
+    await getCoreCache.del(`admin:token:${ userId }`);
+    await getCoreCache.del(`admin:token:refresh:${ userId }`);
+  }
+
+  /**
    * 生成token
    * @param user 用户对象
    * @param roleIds 角色集合
