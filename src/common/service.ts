@@ -3,11 +3,15 @@ import { CacheManager } from '@midwayjs/cache';
 import { Redis } from 'ioredis';
 import { isEmpty } from 'lodash';
 import { getManager, EntityManager } from 'typeorm';
+import { Context } from 'egg';
 
 
 export abstract class BaseService {
   @Inject('cache:cacheManager')
   cacheManager: CacheManager;
+
+  @Inject()
+  ctx: Context;
 
   protected sqlParams: any;
 
