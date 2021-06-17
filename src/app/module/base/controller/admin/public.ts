@@ -1,8 +1,8 @@
-import { ALL, Controller, Get, Inject, Provide, Query } from '@midwayjs/decorator';
+import { ALL, Body, Controller, Get, Inject, Post, Provide, Query } from '@midwayjs/decorator';
 import { BaseController } from '@Base/controller';
 import { ResOp } from '@Root/interface';
 import { AdminAuthService } from '@Root/app/module/base/service/admin/authService';
-import { AuthCaptchaImageDto } from '@Root/app/module/base/dto/admin/auth';
+import { AuthCaptchaImageDto, AuthLoginDto } from '@Root/app/module/base/dto/admin/auth';
 
 @Provide()
 @Controller('/public')
@@ -18,6 +18,17 @@ export class AdminPublicController extends BaseController {
   async getCaptcha(@Query(ALL) captcha: AuthCaptchaImageDto): Promise<ResOp> {
     return this.ok({
       data: await this.authService.getImgCaptcha(captcha)
+    });
+  }
+
+  /**
+   * 登录
+   * @param params
+   */
+  @Post('/login')
+  async login(@Body(ALL) params: AuthLoginDto): Promise<ResOp> {
+    return this.ok({
+      data: await this.authService.login(params)
     });
   }
 }
