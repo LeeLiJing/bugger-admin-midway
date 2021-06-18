@@ -32,7 +32,7 @@ export class CommonController extends BaseController {
   @Get('/permmenu')
   async permmenu(): Promise<ResOp> {
     return this.ok({
-      data: this.sysPermsService.permmenu(this.ctx.admin.roleIds)
+      data: await this.sysPermsService.permmenu(this.ctx.admin.roleIds)
     });
   }
 }
