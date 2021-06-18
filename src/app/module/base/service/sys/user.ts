@@ -16,7 +16,6 @@ export class SysUserService extends BaseService {
    * 获得个人信息
    */
   async getPersonInfo() {
-    console.log(this.ctx.admin);
     const info = await this.sysUserEntity.findOne({ id: this.ctx.admin.userId });
     delete info.password;
     return info;
