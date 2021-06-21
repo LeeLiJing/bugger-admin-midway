@@ -7,6 +7,28 @@ import { isEmpty, remove, uniq } from 'lodash';
  */
 @Provide()
 export class SysMenuService extends BaseService {
+
+  /**
+   * 获得所有菜单
+   */
+  async getList() {
+    const menus = await this.getMenus(this.ctx.admin.roleIds, this.ctx.admin.username === 'admin');
+    if (!isEmpty(menus)) {
+      menus.forEach(e => {
+        const parentMenu = menus.filter(m => {
+          e.parentId = parseInt(e.parentId);
+          if (e.parentId == m.id) {
+            return m.name;
+          }
+        });
+        if (!isEmpty(parentMenu)) {
+          e.parentName = parentMenu[0].name;
+        }
+      });
+    }
+    return menus;
+  }
+
   /**
    * 根据角色获得权限信息
    * @param {[]} roleIds 数组
