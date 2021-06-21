@@ -16,4 +16,20 @@ export class SysPermsService extends BaseService {
     const menus = await this.sysMenuService.getMenus(roleIds, this.ctx.admin.username === 'admin');
     return { perms, menus };
   }
+
+  /**
+   * 根据用户ID获得部门权限
+   * @param userId
+   * @return 部门ID数组
+   */
+  async departmentIds(userId: number) {
+    const getCacheClient = await this.getCache();
+    const department = await getCacheClient.get(`admin:department:${userId}`);
+
+    if (department) {
+      return JSON.parse(department);
+    } else {
+      return [];
+    }
+  }
 }
